@@ -21,7 +21,7 @@ function agentSession($session,$agent) {
 	return $session;
 }
 
-function mymime($filename){
+function myMIME($filename){
 
 
     $mime_types = array(
@@ -61,7 +61,9 @@ function mymime($filename){
         'mp3' => 'audio/mpeg',
         'qt' => 'video/quicktime',
         'mov' => 'video/quicktime',
-
+		'mp4' => 'video/mp4',
+		'ogg' => 'audio/ogg',
+		
         // adobe
         'pdf' => 'application/pdf',
         'psd' => 'image/vnd.adobe.photoshop',
@@ -95,101 +97,59 @@ $x = 0;
 return $myreturn;
 }
 
-function gen_uuid() {
+function genUUID() {
     return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        // 32 bits for "time_low"
+        
         mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
 
-        // 16 bits for "time_mid"
+        
         mt_rand( 0, 0xffff ),
 
-        // 16 bits for "time_hi_and_version",
-        // four most significant bits holds version number 4
+        
         mt_rand( 0, 0x0fff ) | 0x4000,
 
-        // 16 bits, 8 bits for "clk_seq_hi_res",
-        // 8 bits for "clk_seq_low",
-        // two most significant bits holds zero and one for variant DCE1.1
+        
         mt_rand( 0, 0x3fff ) | 0x8000,
 
-        // 48 bits for "node"
+        
         mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
     );
 }
 
 function safeGet($get) {
-	if (isset($get['com']) AND preg_match("/(\w|\-)+/",$get['com'])) {
-		$get['com'] = $get['com'];
+	if (!(isset($get['com']) AND preg_match("/(\w|\-)+/",$get['com']))) {
+		$get['com'] = defGETcom;
 	}
-	else { $get['com'] = "front"; }
-	if (isset($get['action']) AND preg_match("/(\w|\-)+/",$get['action'])) {
-		$get['action'] = $get['action'];
+	if (!(isset($get['action']) AND preg_match("/(\w|\-)+/",$get['action']))) {
+		$get['action'] = defGETview; 
 	}
-	else { $get['action'] = "view"; }
-	if (isset($get['itemid']) AND preg_match("/\d/",$get['itemid']) AND $get['itemid'] < 18446744073709551615) {
-		$get['itemid'] = $get['itemid'];
+	if (!(isset($get['id1']) AND preg_match("/\d/",$get['id1']) AND $get['id1'] < 18446744073709551615)) {
+		$get['id1'] = 0;
 	}
-	else { $get['itemid'] = 0; }
-	if (isset($get['id']) AND preg_match("/\d/",$get['id']) AND $get['id'] < 18446744073709551515) {
-		$get['id'] = $get['id'];
+	if (!(isset($get['id2']) AND preg_match("/\d/",$get['id2']) AND $get['id2'] < 18446744073709551615)) {
+		$get['id1'] = 0;
 	}
-	else { $get['id'] = 1; }
-	if (isset($get['switch']) AND preg_match("/\w/",$get['switch'])) {
-		$get['switch'] = $get['switch'];
+	if (!(isset($get['id3']) AND preg_match("/\d/",$get['id3']) AND $get['id3'] < 18446744073709551615)) {
+		$get['id1'] = 0;
 	}
-	else { $get['switch'] = "not"; }
-	if (isset($get['skip']) AND preg_match("/\d/",$get['skip']) AND $get['skip'] < 18446744073709551515) {
-		$get['skip'] = $get['skip'];
+	if (!(isset($get['uuid1']) AND preg_match("/(\w|\-)+/",$get['uuid1']))) {
+		$get['uuid1'] = defGETuuid;
 	}
-	else { $get['skip'] = 0; }
-	if (isset($get['refid']) AND preg_match("/\d/",$get['refid']) AND $get['refid'] < 18446744073709551615) {
-		$get['refid'] = $get['refid'];
+	if (!(isset($get['uuid2']) AND preg_match("/(\w|\-)+/",$get['uuid2']))) {
+		$get['uuid2'] = defGETuuid;
 	}
-	else { $get['refid'] = 0; }
-if (isset($get['ob1id']) AND preg_match("/\d/",$get['ob1id']) AND $get['ob1id'] < 18446744073709551615) {
-		$get['ob1id'] = $get['ob1id'];
+	if (!(isset($get['uuid3']) AND preg_match("/(\w|\-)+/",$get['uuid3']))) {
+		$get['uuid3'] = defGETuuid;
 	}
-	else { $get['ob1id'] = 0; }
-if (isset($get['ob2id']) AND preg_match("/\d/",$get['ob2id']) AND $get['ob2id'] < 18446744073709551615) {
-		$get['ob2id'] = $get['ob2id'];
+	if (isset($get['mode1']) AND preg_match("/\w/",$get['mode1'])) {
+		$get['mode1'] = defMode;
 	}
-	else { $get['ob2id'] = 0; }
-	if (isset($get['ob3id']) AND preg_match("/\d/",$get['ob3id']) AND $get['ob3id'] < 18446744073709551615) {
-		$get['ob3id'] = $get['ob3id'];
+	if (isset($get['mode2']) AND preg_match("/\w/",$get['mode2'])) {
+		$get['mode1'] = defMode;
 	}
-	else { $get['ob3id'] = 0; }
-if (isset($get['ob4id']) AND preg_match("/\d/",$get['ob4id']) AND $get['ob4id'] < 18446744073709551615) {
-		$get['ob4id'] = $get['ob4id'];
+	if (isset($get['mode3']) AND preg_match("/\w/",$get['mode3'])) {
+		$get['mode1'] = defMode;
 	}
-	else { $get['ob4id'] = 0; }
-if (isset($get['ob1']) AND preg_match("/\w/",$get['ob1'])) {
-		$get['ob1'] = $get['ob1'];
-	}
-	else { $get['ob1'] = "not"; }
-if (isset($get['ob2']) AND preg_match("/\w/",$get['ob2'])) {
-		$get['ob2'] = $get['ob2'];
-	}
-	else { $get['ob2'] = $itt['$varkey']['master']['def']['ob2']; }
-	if (isset($get['ob3']) AND preg_match("/\w/",$get['ob3'])) {
-		$get['ob3'] = $get['ob3'];
-	}
-	else { $get['ob3'] = "not"; }
-if (isset($get['ob4']) AND preg_match("/\w/",$get['ob4'])) {
-		$get['ob4'] = $get['ob4'];
-	}
-	else { $get['ob4'] = "not"; }
-	if (isset($get['room']) AND preg_match("/\w/",$get['room'])) {
-		$get['room'] = $get['room'];
-	}
-	else { $get['room'] = "not"; }
-	if (isset($get['sortby']) AND preg_match("/\w/",$get['sortby'])) {
-		$get['sortby'] = $get['sortby'];
-	}
-	else { $get['sortby'] = "not"; }
-	if (isset($get['xtplfile']) AND preg_match("/\w/",$get['xtplfile'])) {
-		$get['xtplfile'] = $get['xtplfile'];
-	}
-	else { $get['xtplfile'] = "not"; }
 	return $get;
 }
 
