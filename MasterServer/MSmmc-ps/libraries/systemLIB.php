@@ -1,6 +1,8 @@
 <?php
+
+class mmClass {
 //Initilize Session
-function initSession($session) {
+public function initSession($session) {
 	if (!isset($session['initiated'])) {
 		session_regenerate_id();
 		$session['initiated'] = true;
@@ -8,7 +10,7 @@ function initSession($session) {
 	return $session;
 }
 //Agent Session
-function agentSession($session,$agent) {
+public function agentSession($session,$agent) {
 	$fingerprint = md5($agent . secretPUBLIC);
 	if (isset($session['HTTP_USER_AGENT'])) {
 		if ($session['HTTP_USER_AGENT'] != $fingerprint) {
@@ -21,7 +23,7 @@ function agentSession($session,$agent) {
 	return $session;
 }
 
-function myMIME($filename){
+public function myMIME($filename){
 
 
     $mime_types = array(
@@ -97,7 +99,7 @@ $x = 0;
 return $myreturn;
 }
 
-function genUUID() {
+public function genUUID() {
     return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
         
         mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
@@ -116,7 +118,7 @@ function genUUID() {
     );
 }
 
-function safeGet($get) {
+public function safeGet($get) {
 	if (!(isset($get['com']) AND preg_match("/(\w|\-)+/",$get['com']))) {
 		$get['com'] = defGETcom;
 	}
@@ -153,7 +155,7 @@ function safeGet($get) {
 	return $get;
 }
 
-function getPrettyTime($foo,$timezone) {
+public function getPrettyTime($foo,$timezone) {
 // New Timezone Object 
 $timez = new DateTimeZone($timezone); 
 
@@ -166,4 +168,5 @@ $date->setTimezone($timez);
 
 // This will now output 2011-05-23 00:00:00 
 return $date->format('l, F jS, Y g:i A');
+}
 }
