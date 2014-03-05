@@ -7,4 +7,3 @@ define('validUser',FALSE);
 }
 else {
 }
-?>
